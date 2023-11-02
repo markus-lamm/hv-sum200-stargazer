@@ -1,0 +1,69 @@
+﻿@page "/gallery/{Id}"
+
+@using sum200_project_stargazer.Model
+@using sum200_project_stargazer.Data
+@using CommunityToolkit.Maui.Alerts;
+@using CommunityToolkit.Maui.Core;
+
+@inject AstronomyDb db
+@inject ApiService ApiRetriever
+
+<div>
+    <a href="gallery">
+        <div class="return">
+            <img class="return-img" src="Images/return.svg" alt="Return" />
+        </div>
+    </a>
+
+    @if (image != null)
+    {
+        <div class="image-container">
+            <img class="apod-image" src="@image.Url" alt="Image" />
+        </div>
+        <div class="title-bar">
+            <h3 class="apod-title">@image.Title</h3>
+            <div class="save-btn" @onclick="SaveImage(image)">
+                <img class="save-btn-img" src="Images/add.svg" alt="Icon" />
+            </div>
+        </div>
+
+        <div class="apod-explanation">@image.Explanation</div>
+    }
+    else
+    {
+        <div class="loading">
+            <img class="loading-image" src="Images/circle-dashed.svg" alt="" />
+            <em>Loading...</em>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+    private ApodImage image;
+
+    protected override async Task OnInitializedAsync()
+    {
+        image = await ApiRetriever.GetApodById(Id);
+    }
+
+    private EventCallback SaveImage(ApodImage image)
+    {
+        return EventCallback.Factory.Create(this, async () =>
+        {
+            bool success = await db.SaveImage(image);
+
+            if (success)
+            {
+                var toast = Toast.Make("Image saved", ToastDuration.Short, 14);
+                await toast.Show();
+            }
+            else
+            {
+                var toast = Toast.Make("Image already exists in collection", ToastDuration.Short, 14);
+                await toast.Show();
+            }
+        });
+    }
+}

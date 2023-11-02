@@ -1,0 +1,158 @@
+﻿@page "/collection"
+
+@using sum200_project_stargazer.Model
+@using sum200_project_stargazer.Data
+@using CommunityToolkit.Maui.Alerts;
+@using CommunityToolkit.Maui.Core;
+
+@inject AstronomyDb db
+
+<div>
+    @if (collectionList != null)
+    {
+        foreach (var list in collectionList)
+        {
+            if (!listVisibilityStates.ContainsKey(list.Id))
+            {
+                listVisibilityStates[list.Id] = true;
+            }
+            if (!optionsVisibilityStates.ContainsKey(list.Id))
+            {
+                optionsVisibilityStates[list.Id] = false;
+            }
+            <div class="collection-list-container">
+                <div class="collection-list-title">
+                    <div class="collection-list-title-text">@list.Title</div>
+                    @if (optionsVisibilityStates[list.Id])
+                    {
+                        <div class="collection-list-btn-container">
+                            <a href="collection/editlist/@list.Id">
+                                <div class="collection-list-edit-btn">
+                                    <img class="collection-list-btn-img" src="Images/edit.svg" alt="Icon" />
+                                </div>
+                            </a>
+                            <div class="collection-list-delete-btn" @onclick="DeleteList(list)">
+                                <img class="collection-list-btn-img" src="Images/delete.svg" alt="Icon" />
+                            </div>
+                        </div>                            
+                    }
+                    <div class="collection-list-title-btn-container">
+                        <button class="collection-list-title-options" @onclick="() => ToggleOptionsBtnVisibility(list.Id)">
+                            <img class="collection-list-title-options-img" src="Images/options.svg" alt="Icon" />
+                        </button>
+                        <button class="collection-list-toggle-btn" @onclick="() => ToggleCollectionListVisibility(list.Id)">
+                            @if (listVisibilityStates[list.Id])
+                            {
+                                <img class="collection-list-toggle-btn-img" src="Images/arrow-up.svg" alt="Icon" />
+                            }
+                            else
+                            {
+                                <img class="collection-list-toggle-btn-img" src="Images/arrow-down.svg" alt="Icon" />
+                            }
+                        </button>
+                    </div>
+                </div>
+                @if (listVisibilityStates[list.Id])
+                {
+                    <div class="collection-list-img-container">
+                        @{
+                            var imageCount = 0;
+                            @foreach (var image in collectionImages)
+                            {
+                                @if (image.CollectionListId == list.Id)
+                                {
+                                    imageCount++;
+                                    <a href="collection/@image.Id">
+                                        <div class="image-container">
+                                            <img class="apod-image" src="@image.Url" alt="Image" />
+                                        </div>
+                                    </a>
+                                }
+                            }
+                            if (imageCount == 0)
+                            {
+                                <div class="collection-empty">
+                                    <em>This list is empty</em>
+                                </div>
+                            }
+                        }
+                    </div>
+                }
+            </div>
+        }
+    }
+    @if (imageCount != 0)
+    {
+        @foreach (var image in collectionImages)
+        {
+            @if(image.CollectionListId == null)
+            {
+                <a href="collection/@image.Id">
+                    <div class="image-container">
+                        <img class="apod-image" src="@image.Url" alt="Image" />
+                    </div>
+                </a>                    
+            }
+        }
+    }
+    else
+    {
+        <div class="loading">
+            <em>Your Collection is Empty</em>
+        </div>
+    }
+    <a href="collection/createlist">
+        <div class="create-btn">
+            <img class="create-btn-img" src="Images/add.svg" alt="Icon" />
+        </div>
+    </a>
+</div>
+
+@code {
+    private List<ApodImage> collectionImages;
+    private List<CollectionList> collectionList;
+    private int imageCount;
+    Dictionary<string, bool> listVisibilityStates = new Dictionary<string, bool>();
+    Dictionary<string, bool> optionsVisibilityStates = new Dictionary<string, bool>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        collectionImages = await db.GetImages();
+        imageCount = collectionImages.Count();
+        collectionList = await db.GetCollectionLists();
+    }
+
+    private void ToggleCollectionListVisibility(string id)
+    {
+        //Change the visibility of individual collection lists to minimize
+        listVisibilityStates[id] = !listVisibilityStates[id];
+    }
+
+    private void ToggleOptionsBtnVisibility(string id)
+    {
+        //Change the visibility of the buttions in the individual collection lists to minimize
+        optionsVisibilityStates[id] = !optionsVisibilityStates[id];
+    }
+
+    private EventCallback DeleteList(CollectionList collectionListItem)
+    {
+        return EventCallback.Factory.Create(this, async () =>
+        {
+            bool success = await db.DeleteCollectionList(collectionListItem);
+
+            if (success)
+            {
+                var toast = Toast.Make("List deleted", ToastDuration.Short, 14);
+                await toast.Show();
+                // Refresh the page
+                collectionList = await db.GetCollectionLists();
+                collectionImages = await db.GetImages();
+            }
+            else
+            {
+                var toast = Toast.Make("List could not be deleted", ToastDuration.Short, 14);
+                await toast.Show();
+            }
+        });
+    }
+}

@@ -1,0 +1,22 @@
+.page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    min-height: 100vh;
+    color: #bfbfbf;
+}
+
+main {
+    flex: 1;
+    margin-bottom: 5rem;
+}
+
+.bottom-container {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    bottom: 0;
+    justify-content: flex-end;
+    width: 100%;
+}

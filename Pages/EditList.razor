@@ -1,0 +1,86 @@
+﻿@page "/collection/editlist/{Id}"
+
+@using sum200_project_stargazer.Model
+@using sum200_project_stargazer.Data
+@using CommunityToolkit.Maui.Alerts;
+@using CommunityToolkit.Maui.Core;
+
+@inject AstronomyDb db
+
+<div>
+    <a href="collection">
+        <div class="return">
+            <img class="return-img" src="Images/return.svg" alt="Return" />
+        </div>
+    </a>
+    <div class="list-management-container">
+        <h3>Edit a List</h3>
+        <form @onsubmit="EditExistingList()">
+            <div class="list-management-row">
+                <input class="list-management-input" type="text" placeholder="List Name" @bind="listName" />
+                <button class="list-management-submit" type="submit">
+                    <img class="list-management-submit-img" src="Images/edit.svg" alt="Save" />
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="list-name-suggestions">
+        <h3>Need some inspiration?</h3>
+        <div class="list-name-suggestions-ex">
+            <div>
+                <strong>Stars</strong>
+            </div>
+            <div>
+                For the glowing astronomical objects
+            </div>
+        </div>
+        <div class="list-name-suggestions-ex">
+            <div>
+                <strong>Nebulae</strong>
+            </div>
+            <div>
+                For the vast areas of colorful space
+            </div>
+        </div>
+        <div class="list-name-suggestions-ex">
+            <div>
+                <strong>SuperClusters</strong>
+            </div>
+            <div>
+                For the immense gatherings of all things known
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string id { get; set; }
+    private CollectionList collectionList;
+    private string listName;
+
+    protected override async Task OnInitializedAsync()
+    {
+        collectionList = await db.GetCollectionListById(id);
+        listName = collectionList.Title;
+    }
+
+    private EventCallback EditExistingList()
+    {
+        return EventCallback.Factory.Create(this, async () =>
+        {
+            bool success = await db.EditCollectionList(id, listName);
+
+            if (success)
+            {
+                var toast = Toast.Make("List edited", ToastDuration.Short, 14);
+                await toast.Show();
+            }
+            else
+            {
+                var toast = Toast.Make("List could not be edited", ToastDuration.Short, 14);
+                await toast.Show();
+            }
+        });
+    }
+}

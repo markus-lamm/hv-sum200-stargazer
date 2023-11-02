@@ -1,0 +1,58 @@
+.action-container {
+    position: relative;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+
+.action-btn {
+    position: absolute;
+    display: flex;
+    background-color: darkgoldenrod;
+    color: white;
+    margin: 1rem;
+    padding: 0.5rem;
+    border-radius: 100%;
+    width: 4rem;
+    height: 4rem;
+    border: 0.1rem solid black;
+}
+
+.action-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 1rem;
+}
+
+.action-bar-btn-center,
+.action-bar-btn-left,
+.action-bar-btn-right {
+    display: flex;
+    background-color: darkgoldenrod;
+    color: white;
+    padding: 1.0rem;
+    width: 4rem;
+    height: 4rem;
+}
+
+.action-bar-btn-left {
+    border-top-left-radius: 100%;
+    border-bottom-left-radius: 100%;
+}
+
+.action-bar-btn-right {
+    border-top-right-radius: 100%;
+    border-bottom-right-radius: 100%;
+}
+
+.action-anchor {
+    display: flex;
+    background-color: transparent;
+    color: white;
+    margin: 1rem;
+    padding: 0.5rem;
+    border-radius: 100%;
+    width: 4rem;
+    height: 4rem;
+}

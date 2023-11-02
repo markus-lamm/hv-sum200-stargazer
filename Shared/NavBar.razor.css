@@ -1,0 +1,45 @@
+﻿.nav-bar {
+    display: flex;
+}
+
+.nav-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    background-color: darkgoldenrod;
+}
+
+.nav-item {
+    display: flex;
+    justify-content: center;
+    font-size: 0.9rem;
+    width: 100%;
+}
+
+    .nav-item ::deep a {
+        color: black;
+        height: 4rem;
+        display: flex;
+        align-items: center;
+        line-height: 1.5rem;
+    }
+
+        .nav-item ::deep a.active {
+            color: white;
+        }
+
+.nav-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.oi {
+    display: flex;
+    justify-content: center;
+    width: 2rem;
+    font-size: 1.5rem;
+}

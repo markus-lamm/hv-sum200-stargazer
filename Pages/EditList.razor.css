@@ -1,0 +1,69 @@
+.return {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 100%;
+    background-color: darkgoldenrod;
+    margin-bottom: 1rem;
+}
+
+.return-img {
+    width: 2rem;
+    height: 2rem;
+    margin: 1rem;
+}
+
+.list-management-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5rem;
+    margin-top: 2rem;
+}
+
+.list-management-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.list-management-input {
+    background-color: #262626;
+    color: white;
+    border: none;
+    height: 2.5rem;
+}
+
+.list-management-submit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 100%;
+    background-color: cornflowerblue;
+    margin-left: 1rem;
+}
+
+.list-management-submit-img {
+    width: 2rem;
+    height: 2rem;
+    margin: 1rem;
+}
+
+.list-name-suggestions {
+    display: flex;
+    font-size: 1.1rem;
+    flex-direction: column;
+    margin: 1rem;
+}
+
+.list-name-suggestions-ex {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+    margin-left: 0rem;
+}

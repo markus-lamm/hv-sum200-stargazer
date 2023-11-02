@@ -1,0 +1,73 @@
+﻿@page "/collection/{Id}"
+
+@using sum200_project_stargazer.Model
+@using sum200_project_stargazer.Data
+@using CommunityToolkit.Maui.Alerts;
+@using CommunityToolkit.Maui.Core;
+
+@inject AstronomyDb db
+
+<div>
+    <a href="collection">
+        <div class="return">
+            <img class="return-img" src="Images/return.svg" alt="Return" />
+        </div>
+    </a>
+
+    @if (image != null)
+    {
+        <div class="image-container">
+            <img class="apod-image" src="@image.Url" alt="Image" />
+        </div>
+        <div class="title-bar">
+            <h3 class="apod-title">@image.Title</h3>
+            <a href="collection/moveimage/@image.Id">
+                <div class="move-btn">
+                    <img class="move-btn-img" src="Images/move.svg" alt="Icon" />
+                </div>
+            </a>
+            <div class="delete-btn" @onclick="DeleteImage(image)">
+                <img class="delete-btn-img" src="Images/delete.svg" alt="Icon" />
+            </div>
+        </div>
+
+        <div class="apod-explanation">@image.Explanation</div>
+    }
+    else
+    {
+        <div class="loading">
+            <img class="loading-image" src="Images/circle-dashed.svg" alt="" />
+            <em>Loading...</em>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+    private ApodImage image;
+
+    protected override async Task OnInitializedAsync()
+    {
+        image = await db.GetImageById(Id);
+    }
+
+    private EventCallback DeleteImage(ApodImage image)
+    {
+        return EventCallback.Factory.Create(this, async () =>
+        {
+            bool success = await db.DeleteImage(image);
+
+            if (success)
+            {
+                var toast = Toast.Make("Image deleted, please leave the page", ToastDuration.Short, 14);
+                await toast.Show();
+            }
+            else
+            {
+                var toast = Toast.Make("Image could not be deleted", ToastDuration.Short, 14);
+                await toast.Show();
+            }
+        });
+    }
+}

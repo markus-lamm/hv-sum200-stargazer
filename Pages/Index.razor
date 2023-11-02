@@ -1,0 +1,63 @@
+﻿@page "/"
+
+@using sum200_project_stargazer.Model
+@using sum200_project_stargazer.Data
+@using CommunityToolkit.Maui.Alerts;
+@using CommunityToolkit.Maui.Core;
+
+@inject AstronomyDb db
+@inject ApiService DailyImage
+
+<div>
+    <div> 
+        @if (dailyApod != null)
+        {
+            <h2>Astronomy Picture of the Day</h2>
+            <div class="image-container">
+                <img class="apod-image" src="@dailyApod.Url" alt="Image" />
+            </div>
+            <div class="title-bar">
+                <h3 class="apod-title">@dailyApod.Title</h3>
+                <div class="save-btn" @onclick="SaveImage(dailyApod)">
+                    <img class="save-btn-img" src="Images/add.svg" alt="Icon" />
+                </div>
+            </div>
+            <div class="apod-explanation">@dailyApod.Explanation</div>
+        }
+        else
+        {
+            <div class="loading">
+                <img class="loading-image" src="Images/circle-dashed.svg" alt="" />
+                <em>Loading...</em>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private ApodImage dailyApod;
+
+    protected override async Task OnInitializedAsync()
+    {
+        dailyApod = await DailyImage.GetDailyApod();
+    }
+
+    private EventCallback SaveImage(ApodImage image)
+    {
+        return EventCallback.Factory.Create(this, async () =>
+        {
+            bool success = await db.SaveImage(image);
+
+            if (success)
+            {
+                var toast = Toast.Make("Image saved", ToastDuration.Short, 14);
+                await toast.Show();
+            }
+            else
+            {
+                var toast = Toast.Make("Image already exists in collection", ToastDuration.Short, 14);
+                await toast.Show();
+            }
+        });
+    }
+}

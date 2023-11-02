@@ -1,0 +1,97 @@
+﻿@page "/collection/moveimage/{Id}"
+
+@using sum200_project_stargazer.Model
+@using sum200_project_stargazer.Data
+@using CommunityToolkit.Maui.Alerts;
+@using CommunityToolkit.Maui.Core;
+
+@inject AstronomyDb db
+
+<div>
+    <a href="collection">
+        <div class="return">
+            <img class="return-img" src="Images/return.svg" alt="Return" />
+        </div>
+    </a>
+    <div class="list-title">
+        <h2>Move Image</h2>
+        @if (image != null)
+        {
+            <h3>@image.Title</h3>
+        }
+    </div>
+
+    @if (listCount != 0)
+    {
+        <div class="list-options-container">
+            <h3>Select a list for the image</h3>
+            <form @onsubmit="AssignImageToCollection">
+                <div>
+                    @foreach (var list in collectionLists)
+                    {
+                        <div class="list-options-items">
+                            <label>
+                                <input type="radio" name="selectedListId" value="@list.Id" @onchange="((ChangeEventArgs __e) => UpdateSelectedListId(__e.Value.ToString()))" />
+                                @list.Title
+                            </label>
+                        </div>
+                    }
+                </div>
+                <button class="list-options-submit" type="submit">
+                    <img class="list-options-submit-img" src="Images/move.svg" alt="Save" />
+                </button>
+            </form>
+        </div>
+    }
+    else
+    {
+        <div class="loading">
+            <em>Your have no lists</em>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string id { get; set; }
+    private ApodImage image;
+    private List<CollectionList> collectionLists;
+    private string selectedListId;
+    private int listCount;
+
+    protected override async Task OnInitializedAsync()
+    {
+        image = await db.GetImageById(id);
+        collectionLists = await db.GetCollectionLists();
+        listCount = collectionLists.Count();
+    }
+
+    //Update the selectedListId variable when the user selects a list
+    private void UpdateSelectedListId(string listId)
+    {
+        selectedListId = listId;
+    }
+
+    private async Task AssignImageToCollection()
+    {
+        if (string.IsNullOrEmpty(selectedListId))
+        {
+            var toast = Toast.Make("Please select a list to assign the image to", ToastDuration.Short, 14);
+            await toast.Show();
+        }
+        else
+        {
+            bool success = await db.ChangeImageCollection(image.Id, selectedListId);
+
+            if (success)
+            {
+                var toast = Toast.Make("Image moved", ToastDuration.Short, 14);
+                await toast.Show();
+            }
+            else{
+                var toast = Toast.Make("Image could not be moved", ToastDuration.Short, 14);
+                await toast.Show();
+            }
+        }
+    }
+}

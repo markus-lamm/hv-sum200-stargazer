@@ -1,0 +1,53 @@
+﻿@page "/gallery"
+
+@using sum200_project_stargazer.Model
+@using sum200_project_stargazer.Data
+@using CommunityToolkit.Maui.Alerts;
+@using CommunityToolkit.Maui.Core;
+
+@inject ApiService RandomImages
+@inject AstronomyDb db
+
+<div>
+    <div>
+        @if (randomImages != null)
+        {
+            <div class="refresh-bar" @onclick="RefreshGallery()">
+                <img class="refresh-img" src="Images/refresh.svg" alt="Icon" />
+                <div class="refresh-text">Refresh</div>
+            </div>
+            @foreach(var image in randomImages)
+            {
+                <a href="gallery/@image.Id">
+                    <div class="image-container">
+                        <img class="apod-image" src="@image.Url" alt="Image" />
+                    </div>
+                </a>
+            }
+        }
+        else
+        {
+            <div class="loading">
+                <img class="loading-image" src="Images/circle-dashed.svg" alt="" />
+                <em>Loading...</em>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private List<ApodImage> randomImages;
+
+    protected override async Task OnInitializedAsync()
+    {
+        randomImages = await RandomImages.GetGalleryApod();
+    }
+
+    private EventCallback RefreshGallery()
+    {
+        return EventCallback.Factory.Create(this, async () =>
+        {
+            randomImages = await RandomImages.ForceGalleryRefresh();
+        });
+    }
+}

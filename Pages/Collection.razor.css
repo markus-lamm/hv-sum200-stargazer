@@ -1,0 +1,153 @@
+.create-btn {
+    position: fixed;
+    bottom: 9rem;
+    right: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: forestgreen;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 100%;
+    margin-bottom: 1rem;
+}
+
+.create-btn-img {
+    width: 3rem;
+    height: 3rem;
+    margin: 1rem;
+}
+
+.collection-list-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 6rem;
+    background-color: #262626;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+}
+
+.collection-list-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 4rem;
+    background-color: darkgoldenrod;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    color: black;
+}
+
+.collection-list-title-text {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-left: 1.5rem;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.collection-list-title-btn-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.collection-list-title-options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: darkgoldenrod;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 100%;
+    border: dashed;
+    margin-right: 0.5rem;
+}
+
+.collection-list-title-options-img {
+    width: 2rem;
+    height: 2rem;
+    margin: 1rem;
+}
+
+.collection-list-toggle-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: darkgoldenrod;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 100%;
+    border: dashed;
+    margin-right: 0.5rem;
+}
+
+.collection-list-toggle-btn-img {
+    width: 3rem;
+    height: 3rem;
+    margin: 1rem;
+}
+
+.collection-list-btn-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.collection-list-edit-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: cornflowerblue;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 100%;
+    margin-right: 0.5rem;
+}
+
+.collection-list-delete-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: orangered;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 100%;
+    margin-right: 0.5rem;
+}
+
+.collection-list-btn-img {
+    width: 2rem;
+    height: 2rem;
+    margin: 1rem;
+}
+
+.apod-image {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.image-container {
+    position: relative;
+    display: inline-block;
+}
+
+.collection-empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 8vh;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 70vh;
+}

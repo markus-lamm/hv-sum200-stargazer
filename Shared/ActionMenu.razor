@@ -1,0 +1,91 @@
+﻿@using sum200_project_stargazer.Data
+
+@inject IJSRuntime JSRuntime
+
+<div class="action-container">
+
+    <div class="action-btn" @onclick="ToggleActionBar">
+        <img src="Images/music.svg" alt="Music" />
+    </div>
+
+    <div class="action-bar" style="@actionBarStyle">
+        <div class="action-bar-btn-left">
+            <img src="Images/previous.svg" alt="Prev" @onclick="PlayPreviousTrack" />
+        </div>
+        <div class="action-bar-btn-center">
+            <img src=@playingIcon alt="Play/Pause" @onclick="TogglePlay" />
+        </div>
+        <div class="action-bar-btn-center">
+            <img src="Images/next.svg" alt="Next" @onclick="PlayNextTrack" />
+        </div>
+        <div class="action-bar-btn-right"></div>
+    </div>
+
+    <div class="action-anchor"></div>
+
+</div>
+
+<audio id="audio-player" @onended="OnAudioEnded">
+    <source id="audio-player-source" />
+</audio>
+
+@code {
+    private bool isActionBarVisible = false;
+    private string actionBarStyle => isActionBarVisible ? "display: flex;" : "display: none;";
+
+    private void ToggleActionBar()
+    {
+        isActionBarVisible = !isActionBarVisible;
+    }
+
+    private bool isPlaying = false;
+    private string playingIcon => isPlaying ? "Images/pause.svg" : "Images/play.svg";
+    private int currentTrackIndex = 0;
+
+    private List<string> tracks = new List<string>
+    {
+        //Must match the path in the wwwroot folder
+        "/Audio/alphacentauri.ogg",
+        "/Audio/creationandbeyond.ogg",
+        "/Audio/deepspacetravels.ogg",
+        "/Audio/distantnebula.ogg",
+        "/Audio/fasterthanlight.ogg",
+        "/Audio/gravitationalconstant.ogg",
+    };
+
+    private async Task TogglePlay()
+    {
+        if (isPlaying)
+        {
+            await JSRuntime.InvokeVoidAsync("PauseAudio");
+        }
+        else
+        {
+            await JSRuntime.InvokeVoidAsync("PlayAudio", tracks[currentTrackIndex]);
+        }
+        isPlaying = !isPlaying;
+    }
+
+    private async Task PlayNextTrack()
+    {
+        currentTrackIndex = (currentTrackIndex + 1) % tracks.Count;
+        if (isPlaying)
+        {
+            await JSRuntime.InvokeVoidAsync("PlayAudio", tracks[currentTrackIndex]);
+        }
+    }
+
+    private async Task PlayPreviousTrack()
+    {
+        currentTrackIndex = (currentTrackIndex - 1 + tracks.Count) % tracks.Count;
+        if (isPlaying)
+        {
+            await JSRuntime.InvokeVoidAsync("PlayAudio", tracks[currentTrackIndex]);
+        }
+    }
+
+    private async Task OnAudioEnded()
+    {
+        await PlayNextTrack();
+    }
+}
