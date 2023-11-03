@@ -5,25 +5,26 @@
 @using CommunityToolkit.Maui.Alerts;
 @using CommunityToolkit.Maui.Core;
 
-@inject AstronomyDb db
+@inject DbService db
+@inject IJSRuntime js
 
 <div>
-    @if (collectionList != null)
+    @if (_collectionList != null)
     {
-        foreach (var list in collectionList)
+        foreach (var list in _collectionList)
         {
-            if (!listVisibilityStates.ContainsKey(list.Id))
+            if (!_listVisibilityStates.ContainsKey(list.Id))
             {
-                listVisibilityStates[list.Id] = true;
+                _listVisibilityStates[list.Id] = true;
             }
-            if (!optionsVisibilityStates.ContainsKey(list.Id))
+            if (!_optionsVisibilityStates.ContainsKey(list.Id))
             {
-                optionsVisibilityStates[list.Id] = false;
+                _optionsVisibilityStates[list.Id] = false;
             }
             <div class="collection-list-container">
                 <div class="collection-list-title">
                     <div class="collection-list-title-text">@list.Title</div>
-                    @if (optionsVisibilityStates[list.Id])
+                    @if (_optionsVisibilityStates[list.Id])
                     {
                         <div class="collection-list-btn-container">
                             <a href="collection/editlist/@list.Id">
@@ -41,7 +42,7 @@
                             <img class="collection-list-title-options-img" src="Images/options.svg" alt="Icon" />
                         </button>
                         <button class="collection-list-toggle-btn" @onclick="() => ToggleCollectionListVisibility(list.Id)">
-                            @if (listVisibilityStates[list.Id])
+                            @if (_listVisibilityStates[list.Id])
                             {
                                 <img class="collection-list-toggle-btn-img" src="Images/arrow-up.svg" alt="Icon" />
                             }
@@ -52,12 +53,12 @@
                         </button>
                     </div>
                 </div>
-                @if (listVisibilityStates[list.Id])
+                @if (_listVisibilityStates[list.Id])
                 {
                     <div class="collection-list-img-container">
                         @{
                             var imageCount = 0;
-                            @foreach (var image in collectionImages)
+                            @foreach (var image in _collectionImages)
                             {
                                 @if (image.CollectionListId == list.Id)
                                 {
@@ -81,9 +82,9 @@
             </div>
         }
     }
-    @if (imageCount != 0)
+    @if (_imageCount != 0)
     {
-        @foreach (var image in collectionImages)
+        @foreach (var image in _collectionImages)
         {
             @if(image.CollectionListId == null)
             {
@@ -109,49 +110,53 @@
 </div>
 
 @code {
-    private List<ApodImage> collectionImages;
-    private List<CollectionList> collectionList;
-    private int imageCount;
-    Dictionary<string, bool> listVisibilityStates = new Dictionary<string, bool>();
-    Dictionary<string, bool> optionsVisibilityStates = new Dictionary<string, bool>();
+    private List<ApodImage> _collectionImages;
+    private List<CollectionList> _collectionList;
+    private int _imageCount;
+    private Dictionary<string, bool> _listVisibilityStates = new Dictionary<string, bool>();
+    private Dictionary<string, bool> _optionsVisibilityStates = new Dictionary<string, bool>();
 
     protected override async Task OnInitializedAsync()
     {
-        collectionImages = await db.GetImages();
-        imageCount = collectionImages.Count();
-        collectionList = await db.GetCollectionLists();
+        _collectionImages = await db.GetImages();
+        _imageCount = _collectionImages.Count();
+        _collectionList = await db.GetCollectionLists();
     }
 
     private void ToggleCollectionListVisibility(string id)
     {
         //Change the visibility of individual collection lists to minimize
-        listVisibilityStates[id] = !listVisibilityStates[id];
+        _listVisibilityStates[id] = !_listVisibilityStates[id];
     }
 
     private void ToggleOptionsBtnVisibility(string id)
     {
         //Change the visibility of the buttions in the individual collection lists to minimize
-        optionsVisibilityStates[id] = !optionsVisibilityStates[id];
+        _optionsVisibilityStates[id] = !_optionsVisibilityStates[id];
     }
 
     private EventCallback DeleteList(CollectionList collectionListItem)
     {
         return EventCallback.Factory.Create(this, async () =>
         {
-            bool success = await db.DeleteCollectionList(collectionListItem);
+            bool confirm = await js.InvokeAsync<bool>("confirmDelete", new object[] { "Are you sure you want to delete this list?" });
+            if (confirm)
+            {
+                bool success = await db.DeleteCollectionList(collectionListItem);
 
-            if (success)
-            {
-                var toast = Toast.Make("List deleted", ToastDuration.Short, 14);
-                await toast.Show();
-                // Refresh the page
-                collectionList = await db.GetCollectionLists();
-                collectionImages = await db.GetImages();
-            }
-            else
-            {
-                var toast = Toast.Make("List could not be deleted", ToastDuration.Short, 14);
-                await toast.Show();
+                if (success)
+                {
+                    var toast = Toast.Make("List deleted", ToastDuration.Short, 14);
+                    await toast.Show();
+                    // Refresh the page
+                    _collectionList = await db.GetCollectionLists();
+                    _collectionImages = await db.GetImages();
+                }
+                else
+                {
+                    var toast = Toast.Make("List could not be deleted", ToastDuration.Short, 14);
+                    await toast.Show();
+                }
             }
         });
     }

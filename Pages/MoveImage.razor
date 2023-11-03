@@ -5,29 +5,28 @@
 @using CommunityToolkit.Maui.Alerts;
 @using CommunityToolkit.Maui.Core;
 
-@inject AstronomyDb db
+@inject DbService db
 
 <div>
-    <a href="collection">
-        <div class="return">
-            <img class="return-img" src="Images/return.svg" alt="Return" />
-        </div>
-    </a>
+    <div class="title-bar-container">
+        <img class="title-bar-img" src="Images/move.svg" alt="Image" />
+        <div class="title-bar-text">Move Image</div>
+    </div>
     <div class="list-title">
-        <h2>Move Image</h2>
-        @if (image != null)
+        @if (_image != null)
         {
-            <h3>@image.Title</h3>
+            <div class="title-bar-title">
+                <h3 class="title-bar-title-text">@_image.Title</h3>
+            </div>
         }
     </div>
-
-    @if (listCount != 0)
+    @if (_listCount != 0)
     {
         <div class="list-options-container">
             <h3>Select a list for the image</h3>
             <form @onsubmit="AssignImageToCollection">
-                <div>
-                    @foreach (var list in collectionLists)
+                <div class="list-options-items-container">
+                    @foreach (var list in _collectionLists)
                     {
                         <div class="list-options-items">
                             <label>
@@ -37,9 +36,12 @@
                         </div>
                     }
                 </div>
-                <button class="list-options-submit" type="submit">
-                    <img class="list-options-submit-img" src="Images/move.svg" alt="Save" />
-                </button>
+                <div class="move-btn-container">
+                    <button class="move-btn" type="submit">
+                        <img class="move-btn-img" src="Images/move.svg" alt="Icon" />
+                        <div class="move-btn-text">Save</div>
+                    </button>
+                </div>
             </form>
         </div>
     }
@@ -49,39 +51,44 @@
             <em>Your have no lists</em>
         </div>
     }
+    <a href="collection">
+        <div class="return">
+            <img class="return-img" src="Images/return.svg" alt="Return" />
+        </div>
+    </a>
 </div>
 
 @code {
     [Parameter]
     public string id { get; set; }
-    private ApodImage image;
-    private List<CollectionList> collectionLists;
-    private string selectedListId;
-    private int listCount;
+    private ApodImage _image;
+    private List<CollectionList> _collectionLists;
+    private string _selectedListId;
+    private int _listCount;
 
     protected override async Task OnInitializedAsync()
     {
-        image = await db.GetImageById(id);
-        collectionLists = await db.GetCollectionLists();
-        listCount = collectionLists.Count();
+        _image = await db.GetImageById(id);
+        _collectionLists = await db.GetCollectionLists();
+        _listCount = _collectionLists.Count();
     }
 
     //Update the selectedListId variable when the user selects a list
     private void UpdateSelectedListId(string listId)
     {
-        selectedListId = listId;
+        _selectedListId = listId;
     }
 
     private async Task AssignImageToCollection()
     {
-        if (string.IsNullOrEmpty(selectedListId))
+        if (string.IsNullOrEmpty(_selectedListId))
         {
             var toast = Toast.Make("Please select a list to assign the image to", ToastDuration.Short, 14);
             await toast.Show();
         }
         else
         {
-            bool success = await db.ChangeImageCollection(image.Id, selectedListId);
+            bool success = await db.ChangeImageCollection(_image.Id, _selectedListId);
 
             if (success)
             {

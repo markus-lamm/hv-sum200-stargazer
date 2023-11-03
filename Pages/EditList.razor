@@ -5,21 +5,20 @@
 @using CommunityToolkit.Maui.Alerts;
 @using CommunityToolkit.Maui.Core;
 
-@inject AstronomyDb db
+@inject DbService db
 
 <div>
-    <a href="collection">
-        <div class="return">
-            <img class="return-img" src="Images/return.svg" alt="Return" />
-        </div>
-    </a>
+    <div class="title-bar-container">
+        <img class="title-bar-img" src="Images/edit.svg" alt="Image" />
+        <div class="title-bar-text">Edit List</div>
+    </div>
     <div class="list-management-container">
-        <h3>Edit a List</h3>
         <form @onsubmit="EditExistingList()">
-            <div class="list-management-row">
-                <input class="list-management-input" type="text" placeholder="List Name" @bind="listName" />
-                <button class="list-management-submit" type="submit">
-                    <img class="list-management-submit-img" src="Images/edit.svg" alt="Save" />
+            <input class="list-management-input" type="text" placeholder="List Name" @bind="_listName" />
+            <div class="edit-btn-container">
+                <button class="edit-btn" type="submit">
+                    <img class="edit-btn-img" src="Images/edit.svg" alt="Icon" />
+                    <div class="edit-btn-text">Save</div>
                 </button>
             </div>
         </form>
@@ -51,25 +50,30 @@
             </div>
         </div>
     </div>
+    <a href="collection">
+        <div class="return">
+            <img class="return-img" src="Images/return.svg" alt="Return" />
+        </div>
+    </a>
 </div>
 
 @code {
     [Parameter]
     public string id { get; set; }
-    private CollectionList collectionList;
-    private string listName;
+    private CollectionList _collectionList;
+    private string _listName;
 
     protected override async Task OnInitializedAsync()
     {
-        collectionList = await db.GetCollectionListById(id);
-        listName = collectionList.Title;
+        _collectionList = await db.GetCollectionListById(id);
+        _listName = _collectionList.Title;
     }
 
     private EventCallback EditExistingList()
     {
         return EventCallback.Factory.Create(this, async () =>
         {
-            bool success = await db.EditCollectionList(id, listName);
+            bool success = await db.EditCollectionList(id, _listName);
 
             if (success)
             {

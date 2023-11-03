@@ -1,51 +1,109 @@
-.return {
-    width: 4rem;
-    height: 4rem;
-    border-radius: 100%;
-    background-color: darkgoldenrod;
+.title-bar-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid cornflowerblue;
+    border-radius: 10px;
     margin-bottom: 1rem;
+    height: 3rem;
 }
 
-.return-img {
+.title-bar-img {
     width: 2rem;
     height: 2rem;
     margin: 1rem;
+    filter: invert(55%) sepia(96%) saturate(1517%) hue-rotate(194deg) brightness(96%) contrast(94%);
 }
 
-.list-title {
+.title-bar-text {
+    font-size: 1.2rem;
+    color: cornflowerblue;
+    margin-right: 2rem;
+}
+
+.title-bar-title {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    margin-bottom: 2rem;
+    width: 100%;
+    margin-bottom: 1rem;
+    border: 3px solid darkgoldenrod;
+    border-radius: 10px;
+}
+
+.title-bar-title-text {
+    font-size: 1.2rem;
+    margin: 0.5rem;
 }
 
 .list-options-container {
     display: flex;
     flex-direction: column;
-    margin-left: 1rem;
+    margin: 2rem;
+}
+
+.list-options-items-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border: 3px dashed darkgoldenrod;
+    border-radius: 10px;
+    padding: 1rem;
 }
 
 .list-options-items {
     display: flex;
     flex-direction: column;
-    margin-top: 1rem;
+    margin: 0.5rem;
     font-size: 1.1rem;
 }
 
-.list-options-submit {
+.move-btn-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.move-btn {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: none;
-    width: 3rem;
-    height: 3rem;
-    border-radius: 100%;
     background-color: cornflowerblue;
-    margin-top: 1rem;
+    border-radius: 20px;
+    border: none;
 }
 
-.list-options-submit-img {
+.move-btn-img {
+    width: 2rem;
+    height: 2rem;
+    margin: 0.3rem;
+    margin-left: 0.5rem;
+}
+
+.move-btn-text {
+    font-size: 1.2rem;
+    color: black;
+    margin-right: 0.8rem;
+}
+
+.return {
+    position: fixed;
+    bottom: 9rem;
+    right: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: darkgoldenrod;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 100%;
+    margin-bottom: 1rem;
+}
+
+.return-img {
     width: 2rem;
     height: 2rem;
     margin: 1rem;

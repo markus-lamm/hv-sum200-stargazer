@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace sum200_project_stargazer.Data
 {
-    public class AstronomyDb
+    public class DbService
     {
         //Code reference https://blazorhelpwebsite.com/ViewBlogPost/61
 
         string _dbPath;
 
         public string StatusMessage { get; set; }
-        private SQLiteAsyncConnection conn;
+        private SQLiteAsyncConnection _conn;
 
-        public AstronomyDb(string dbPath)
+        public DbService(string dbPath)
         {
             _dbPath = dbPath;
         }
@@ -27,13 +27,13 @@ namespace sum200_project_stargazer.Data
         {
             try
             {
-                if (conn != null)
+                if (_conn != null)
                     return;
 
                 // Create database and tables if they don't exist
-                conn = new SQLiteAsyncConnection(_dbPath);
-                await conn.CreateTableAsync<ApodImage>();
-                await conn.CreateTableAsync<CollectionList>();
+                _conn = new SQLiteAsyncConnection(_dbPath);
+                await _conn.CreateTableAsync<ApodImage>();
+                await _conn.CreateTableAsync<CollectionList>();
             }
             catch (Exception ex)
             {
@@ -46,7 +46,7 @@ namespace sum200_project_stargazer.Data
             try
             {
                 await InitializeDatabase();
-                return await conn.FindAsync<ApodImage>(id);
+                return await _conn.FindAsync<ApodImage>(id);
             }
             catch (Exception ex)
             {
@@ -60,7 +60,7 @@ namespace sum200_project_stargazer.Data
             try
             {
                 await InitializeDatabase();
-                return await conn.Table<ApodImage>().ToListAsync();
+                return await _conn.Table<ApodImage>().ToListAsync();
             }
             catch (Exception ex)
             {
@@ -75,11 +75,11 @@ namespace sum200_project_stargazer.Data
             {
                 await InitializeDatabase();
                 //Check if an object with the same URL exists
-                ApodImage existingImage = await conn.FindWithQueryAsync<ApodImage>("SELECT * FROM ApodImage WHERE Url = ?", apodImage.Url);
+                ApodImage existingImage = await _conn.FindWithQueryAsync<ApodImage>("SELECT * FROM ApodImage WHERE Url = ?", apodImage.Url);
 
                 if (existingImage == null)
                 {
-                    await conn.InsertAsync(apodImage);
+                    await _conn.InsertAsync(apodImage);
                     return true;
                 }
                 else
@@ -99,7 +99,7 @@ namespace sum200_project_stargazer.Data
             try
             {
                 await InitializeDatabase();
-                await conn.DeleteAsync(apodImage);
+                await _conn.DeleteAsync(apodImage);
                 return true;
             }
             catch (Exception ex)
@@ -114,9 +114,9 @@ namespace sum200_project_stargazer.Data
             try
             {
                 await InitializeDatabase();
-                ApodImage apodImage = await conn.FindAsync<ApodImage>(imageId);
+                ApodImage apodImage = await _conn.FindAsync<ApodImage>(imageId);
                 apodImage.CollectionListId = newCollectionId;
-                await conn.UpdateAsync(apodImage);
+                await _conn.UpdateAsync(apodImage);
                 return true;
             }
             catch (Exception ex)
@@ -132,7 +132,7 @@ namespace sum200_project_stargazer.Data
             try
             {
                 await InitializeDatabase();
-                return await conn.Table<CollectionList>().ToListAsync();
+                return await _conn.Table<CollectionList>().ToListAsync();
             }
             catch (Exception ex)
             {
@@ -146,7 +146,7 @@ namespace sum200_project_stargazer.Data
             try
             {
                 await InitializeDatabase();
-                return await conn.FindAsync<CollectionList>(id);
+                return await _conn.FindAsync<CollectionList>(id);
             }
             catch (Exception ex)
             {
@@ -163,7 +163,7 @@ namespace sum200_project_stargazer.Data
                 CollectionList collectionList = new CollectionList();
                 collectionList.Id = Guid.NewGuid().ToString();
                 collectionList.Title = title;
-                await conn.InsertAsync(collectionList);
+                await _conn.InsertAsync(collectionList);
                 return true;
             }
             catch (Exception ex)
@@ -179,7 +179,7 @@ namespace sum200_project_stargazer.Data
             {
                 await InitializeDatabase();
                 await UnassignImagesFromCollection(collectionList.Id);
-                await conn.DeleteAsync(collectionList);
+                await _conn.DeleteAsync(collectionList);
                 return true;
             }
             catch (Exception ex)
@@ -194,11 +194,11 @@ namespace sum200_project_stargazer.Data
             try
             {
                 await InitializeDatabase();
-                List<ApodImage> images = await conn.Table<ApodImage>().Where(x => x.CollectionListId == collectionId).ToListAsync();
+                List<ApodImage> images = await _conn.Table<ApodImage>().Where(x => x.CollectionListId == collectionId).ToListAsync();
                 foreach (ApodImage image in images)
                 {
                     image.CollectionListId = null;
-                    await conn.UpdateAsync(image);
+                    await _conn.UpdateAsync(image);
                 }
             }
             catch (Exception ex)
@@ -212,9 +212,9 @@ namespace sum200_project_stargazer.Data
             try
             {
                 await InitializeDatabase();
-                CollectionList collectionList = await conn.FindAsync<CollectionList>(id);
+                CollectionList collectionList = await _conn.FindAsync<CollectionList>(id);
                 collectionList.Title = newTitle;
-                await conn.UpdateAsync(collectionList);
+                await _conn.UpdateAsync(collectionList);
                 return true;
             }
             catch (Exception ex)

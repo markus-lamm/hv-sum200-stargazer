@@ -5,29 +5,39 @@
 @using CommunityToolkit.Maui.Alerts;
 @using CommunityToolkit.Maui.Core;
 
-@inject AstronomyDb db
+@inject DbService db
 @inject ApiService ApiRetriever
 
 <div>
-    <a href="gallery">
-        <div class="return">
-            <img class="return-img" src="Images/return.svg" alt="Return" />
-        </div>
-    </a>
-
-    @if (image != null)
+    @if (_image != null)
     {
         <div class="image-container">
-            <img class="apod-image" src="@image.Url" alt="Image" />
+            <img class="apod-image" src="@_image.Url" alt="Image" />
         </div>
-        <div class="title-bar">
-            <h3 class="apod-title">@image.Title</h3>
-            <div class="save-btn" @onclick="SaveImage(image)">
+        <div class="title-bar-title">
+            <h3 class="title-bar-title-text">@_image.Title</h3>
+        </div>
+        <div class="action-bar">
+            <div class="save-btn" @onclick="SaveImage(_image)">
                 <img class="save-btn-img" src="Images/add.svg" alt="Icon" />
+                <div class="save-btn-text">Save</div>
             </div>
         </div>
-
-        <div class="apod-explanation">@image.Explanation</div>
+        <div class="explanation-container">
+            <div class="explanation-container-text @(_isExpanded ? "" : "collapsed")">@_image.Explanation</div>
+            <div class="explanation-container-btn">
+                @if (_isExpanded)
+                {
+                    <img class="explanation-container-btn-img" src="Images/arrow-up.svg" alt="Icon" />
+                    <div class="explanation-container-btn-text" @onclick="ChangeVisibleText">Collapse</div>
+                }
+                else
+                {
+                    <img class="explanation-container-btn-img" src="Images/arrow-down.svg" alt="Icon" />
+                    <div class="explanation-container-btn-text" @onclick="ChangeVisibleText">Expand</div>
+                }
+            </div>
+        </div>
     }
     else
     {
@@ -36,16 +46,27 @@
             <em>Loading...</em>
         </div>
     }
+    <a href="gallery">
+        <div class="return">
+            <img class="return-img" src="Images/return.svg" alt="Return" />
+        </div>
+    </a>
 </div>
 
 @code {
     [Parameter]
     public string Id { get; set; }
-    private ApodImage image;
+    private ApodImage _image;
+    private bool _isExpanded = false;
 
     protected override async Task OnInitializedAsync()
     {
-        image = await ApiRetriever.GetApodById(Id);
+        _image = await ApiRetriever.GetApodById(Id);
+    }
+
+    private void ChangeVisibleText()
+    {
+        _isExpanded = !_isExpanded;
     }
 
     private EventCallback SaveImage(ApodImage image)

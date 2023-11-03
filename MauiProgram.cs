@@ -19,7 +19,7 @@ namespace sum200_project_stargazer
             builder.Services.AddMauiBlazorWebView();
 
             var dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Astronomy.db");
-            builder.Services.AddSingleton(s => ActivatorUtilities.CreateInstance<AstronomyDb>(s, dbPath));
+            builder.Services.AddSingleton(s => ActivatorUtilities.CreateInstance<DbService>(s, dbPath));
 
             builder.Services.AddSingleton<ApiService>();
 

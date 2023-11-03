@@ -1,24 +1,26 @@
-.return {
-    width: 4rem;
-    height: 4rem;
-    border-radius: 100%;
-    background-color: darkgoldenrod;
+.title-bar-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid darkgoldenrod;
+    border-radius: 10px;
     margin-bottom: 1rem;
+    height: 3rem;
 }
 
-.return-img {
+.title-bar-img {
     width: 2rem;
     height: 2rem;
     margin: 1rem;
+    color: white;
+    filter: invert(46%) sepia(95%) saturate(417%) hue-rotate(5deg) brightness(96%) contrast(96%);
 }
 
-.apod-image {
-    width: 100%;
-    margin-bottom: 1rem;
-}
-
-.apod-explanation {
-    margin-bottom: 1rem;
+.title-bar-text {
+    font-size: 1.2rem;
+    color: darkgoldenrod;
+    margin-right: 1rem;
 }
 
 .image-container {
@@ -26,29 +28,21 @@
     display: inline-block;
 }
 
-.title-bar {
+.apod-image {
+    width: 100%;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+}
+
+.action-bar {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     width: 100%;
     margin-bottom: 1rem;
 }
 
-.delete-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: orangered;
-    width: 3rem;
-    height: 3rem;
-    border-radius: 100%;
-    margin-left: 1rem;
-}
-
-.delete-btn-img {
-    width: 2.5rem;
-    height: 2.5rem;
-    margin: 1rem;
+.move-link {
+    text-decoration: none;
 }
 
 .move-btn {
@@ -56,15 +50,119 @@
     justify-content: center;
     align-items: center;
     background-color: cornflowerblue;
-    width: 3rem;
-    height: 3rem;
-    border-radius: 100%;
-    margin-left: 1rem;
+    border-radius: 20px;
+    margin-right: 1rem;
 }
 
 .move-btn-img {
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2rem;
+    height: 2rem;
+    margin: 0.3rem;
+    margin-left: 0.5rem;
+}
+
+.move-btn-text {
+    font-size: 1.2rem;
+    color: black;
+    margin-right: 0.8rem;
+}
+
+.delete-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: orangered;
+    border-radius: 20px;
+}
+
+.delete-btn-img {
+    width: 2rem;
+    height: 2rem;
+    margin: 0.3rem;
+    margin-left: 0.5rem;
+}
+
+.delete-btn-text {
+    font-size: 1.2rem;
+    color: black;
+    margin-right: 0.8rem;
+}
+
+.title-bar-title {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1rem;
+    border: 3px solid darkgoldenrod;
+    border-radius: 10px;
+}
+
+.title-bar-title-text {
+    font-size: 1.2rem;
+    margin: 0.5rem;
+}
+
+.explanation-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1rem;
+    border: 3px dashed darkgoldenrod;
+    border-radius: 10px;
+    margin-bottom: 5rem;
+}
+
+.explanation-container-text {
+    margin: 0.5rem;
+}
+
+.explanation-container-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.explanation-container-btn-img {
+    width: 2rem;
+    height: 2rem;
+    margin: 0.3rem;
+    margin-left: 0.5rem;
+    filter: invert(99%) sepia(1%) saturate(299%) hue-rotate(324deg) brightness(118%) contrast(90%);
+}
+
+.explanation-container-btn-text {
+    font-size: 1.2rem;
+    color: #f2f2f2;
+    margin-right: 0.8rem;
+}
+
+.collapsed {
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    width: 95%;
+}
+
+.return {
+    position: fixed;
+    bottom: 9rem;
+    right: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: darkgoldenrod;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 100%;
+    margin-bottom: 1rem;
+}
+
+.return-img {
+    width: 2rem;
+    height: 2rem;
     margin: 1rem;
 }
 

@@ -5,24 +5,45 @@
 @using CommunityToolkit.Maui.Alerts;
 @using CommunityToolkit.Maui.Core;
 
-@inject AstronomyDb db
+@inject DbService db
 @inject ApiService DailyImage
 
 <div>
     <div> 
-        @if (dailyApod != null)
+        @if (_dailyApod != null)
         {
-            <h2>Astronomy Picture of the Day</h2>
-            <div class="image-container">
-                <img class="apod-image" src="@dailyApod.Url" alt="Image" />
+            <div class="title-bar-container">
+                <img class="title-bar-img" src="Images/stars.svg" alt="Image" />
+                <div class="title-bar-text">Astronomy Picture of the Day</div>
             </div>
-            <div class="title-bar">
-                <h3 class="apod-title">@dailyApod.Title</h3>
-                <div class="save-btn" @onclick="SaveImage(dailyApod)">
+
+            <div class="image-container">
+                <img class="apod-image" src="@_dailyApod.Url" alt="Image" />
+            </div>
+            <div class="title-bar-title">
+                <h3 class="title-bar-title-text">@_dailyApod.Title</h3>
+            </div>
+            <div class="action-bar">
+                <div class="save-btn" @onclick="SaveImage(_dailyApod)">
                     <img class="save-btn-img" src="Images/add.svg" alt="Icon" />
+                    <div class="save-btn-text">Save</div>
                 </div>
             </div>
-            <div class="apod-explanation">@dailyApod.Explanation</div>
+            <div class="explanation-container">
+                <div class="explanation-container-text @(_isExpanded ? "" : "collapsed")">@_dailyApod.Explanation</div>
+                <div class="explanation-container-btn">
+                    @if(_isExpanded)
+                    {
+                        <img class="explanation-container-btn-img" src="Images/arrow-up.svg" alt="Icon" />
+                        <div class="explanation-container-btn-text" @onclick="ChangeVisibleText">Collapse</div>
+                    }
+                    else
+                    {
+                        <img class="explanation-container-btn-img" src="Images/arrow-down.svg" alt="Icon" />
+                        <div class="explanation-container-btn-text" @onclick="ChangeVisibleText">Expand</div>
+                    }
+                </div>
+            </div>
         }
         else
         {
@@ -35,11 +56,17 @@
 </div>
 
 @code {
-    private ApodImage dailyApod;
+    private ApodImage _dailyApod;
+    private bool _isExpanded = false;
 
     protected override async Task OnInitializedAsync()
     {
-        dailyApod = await DailyImage.GetDailyApod();
+        _dailyApod = await DailyImage.GetDailyApod();
+    }
+
+    private void ChangeVisibleText()
+    {
+        _isExpanded = !_isExpanded;
     }
 
     private EventCallback SaveImage(ApodImage image)

@@ -90,7 +90,7 @@ namespace sum200_project_stargazer.Data
                     return null;
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 var toast = Toast.Make("An error has occured, check your internet connection", ToastDuration.Short, 14);
                 await toast.Show();
@@ -122,7 +122,7 @@ namespace sum200_project_stargazer.Data
                     return null;
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 var toast = Toast.Make("An error has occured, check your internet connection", ToastDuration.Short, 14);
                 await toast.Show();

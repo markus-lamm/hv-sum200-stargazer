@@ -8,12 +8,12 @@
         <img src="Images/music.svg" alt="Music" />
     </div>
 
-    <div class="action-bar" style="@actionBarStyle">
+    <div class="action-bar" style="@_actionBarStyle">
         <div class="action-bar-btn-left">
             <img src="Images/previous.svg" alt="Prev" @onclick="PlayPreviousTrack" />
         </div>
         <div class="action-bar-btn-center">
-            <img src=@playingIcon alt="Play/Pause" @onclick="TogglePlay" />
+            <img src=@_playingIcon alt="Play/Pause" @onclick="TogglePlay" />
         </div>
         <div class="action-bar-btn-center">
             <img src="Images/next.svg" alt="Next" @onclick="PlayNextTrack" />
@@ -30,19 +30,19 @@
 </audio>
 
 @code {
-    private bool isActionBarVisible = false;
-    private string actionBarStyle => isActionBarVisible ? "display: flex;" : "display: none;";
+    private bool _isActionBarVisible = false;
+    private string _actionBarStyle => _isActionBarVisible ? "display: flex;" : "display: none;";
 
     private void ToggleActionBar()
     {
-        isActionBarVisible = !isActionBarVisible;
+        _isActionBarVisible = !_isActionBarVisible;
     }
 
-    private bool isPlaying = false;
-    private string playingIcon => isPlaying ? "Images/pause.svg" : "Images/play.svg";
-    private int currentTrackIndex = 0;
+    private bool _isPlaying = false;
+    private string _playingIcon => _isPlaying ? "Images/pause.svg" : "Images/play.svg";
+    private int _currentTrackIndex = 0;
 
-    private List<string> tracks = new List<string>
+    private List<string> _tracks = new List<string>
     {
         //Must match the path in the wwwroot folder
         "/Audio/alphacentauri.ogg",
@@ -55,32 +55,32 @@
 
     private async Task TogglePlay()
     {
-        if (isPlaying)
+        if (_isPlaying)
         {
             await JSRuntime.InvokeVoidAsync("PauseAudio");
         }
         else
         {
-            await JSRuntime.InvokeVoidAsync("PlayAudio", tracks[currentTrackIndex]);
+            await JSRuntime.InvokeVoidAsync("PlayAudio", _tracks[_currentTrackIndex]);
         }
-        isPlaying = !isPlaying;
+        _isPlaying = !_isPlaying;
     }
 
     private async Task PlayNextTrack()
     {
-        currentTrackIndex = (currentTrackIndex + 1) % tracks.Count;
-        if (isPlaying)
+        _currentTrackIndex = (_currentTrackIndex + 1) % _tracks.Count;
+        if (_isPlaying)
         {
-            await JSRuntime.InvokeVoidAsync("PlayAudio", tracks[currentTrackIndex]);
+            await JSRuntime.InvokeVoidAsync("PlayAudio", _tracks[_currentTrackIndex]);
         }
     }
 
     private async Task PlayPreviousTrack()
     {
-        currentTrackIndex = (currentTrackIndex - 1 + tracks.Count) % tracks.Count;
-        if (isPlaying)
+        _currentTrackIndex = (_currentTrackIndex - 1 + _tracks.Count) % _tracks.Count;
+        if (_isPlaying)
         {
-            await JSRuntime.InvokeVoidAsync("PlayAudio", tracks[currentTrackIndex]);
+            await JSRuntime.InvokeVoidAsync("PlayAudio", _tracks[_currentTrackIndex]);
         }
     }
 

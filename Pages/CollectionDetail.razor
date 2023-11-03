@@ -5,33 +5,46 @@
 @using CommunityToolkit.Maui.Alerts;
 @using CommunityToolkit.Maui.Core;
 
-@inject AstronomyDb db
+@inject DbService db
+@inject IJSRuntime js
 
 <div>
-    <a href="collection">
-        <div class="return">
-            <img class="return-img" src="Images/return.svg" alt="Return" />
-        </div>
-    </a>
-
-    @if (image != null)
+    @if (_image != null)
     {
         <div class="image-container">
-            <img class="apod-image" src="@image.Url" alt="Image" />
+            <img class="apod-image" src="@_image.Url" alt="Image" />
         </div>
-        <div class="title-bar">
-            <h3 class="apod-title">@image.Title</h3>
-            <a href="collection/moveimage/@image.Id">
+        <div class="title-bar-title">
+            <h3 class="title-bar-title-text">@_image.Title</h3>
+        </div>
+        <div class="action-bar">
+
+            <a class="move-link" href="collection/moveimage/@_image.Id">
                 <div class="move-btn">
                     <img class="move-btn-img" src="Images/move.svg" alt="Icon" />
+                    <div class="move-btn-text">Move</div>
                 </div>
             </a>
-            <div class="delete-btn" @onclick="DeleteImage(image)">
+            <div class="delete-btn" @onclick="DeleteImage(_image)">
                 <img class="delete-btn-img" src="Images/delete.svg" alt="Icon" />
+                <div class="delete-btn-text">Delete</div>
             </div>
         </div>
-
-        <div class="apod-explanation">@image.Explanation</div>
+        <div class="explanation-container">
+            <div class="explanation-container-text @(_isExpanded ? "" : "collapsed")">@_image.Explanation</div>
+            <div class="explanation-container-btn">
+                @if (_isExpanded)
+                {
+                    <img class="explanation-container-btn-img" src="Images/arrow-up.svg" alt="Icon" />
+                    <div class="explanation-container-btn-text" @onclick="ChangeVisibleText">Collapse</div>
+                }
+                else
+                {
+                    <img class="explanation-container-btn-img" src="Images/arrow-down.svg" alt="Icon" />
+                    <div class="explanation-container-btn-text" @onclick="ChangeVisibleText">Expand</div>
+                }
+            </div>
+        </div>
     }
     else
     {
@@ -40,33 +53,49 @@
             <em>Loading...</em>
         </div>
     }
+    <a href="collection">
+        <div class="return">
+            <img class="return-img" src="Images/return.svg" alt="Return" />
+        </div>
+    </a>
 </div>
 
 @code {
     [Parameter]
     public string Id { get; set; }
-    private ApodImage image;
+    private ApodImage _image;
+    private bool _isExpanded = false;
 
     protected override async Task OnInitializedAsync()
     {
-        image = await db.GetImageById(Id);
+        _image = await db.GetImageById(Id);
+    }
+
+    private void ChangeVisibleText()
+    {
+        _isExpanded = !_isExpanded;
     }
 
     private EventCallback DeleteImage(ApodImage image)
     {
         return EventCallback.Factory.Create(this, async () =>
         {
-            bool success = await db.DeleteImage(image);
+            bool confirm = await js.InvokeAsync<bool>("confirmDelete", new object[] { "Are you sure you want to delete this image?" });
 
-            if (success)
+            if (confirm)
             {
-                var toast = Toast.Make("Image deleted, please leave the page", ToastDuration.Short, 14);
-                await toast.Show();
-            }
-            else
-            {
-                var toast = Toast.Make("Image could not be deleted", ToastDuration.Short, 14);
-                await toast.Show();
+                bool success = await db.DeleteImage(image);
+
+                if (success)
+                {
+                    var toast = Toast.Make("Image deleted, please leave the page", ToastDuration.Short, 14);
+                    await toast.Show();
+                }
+                else
+                {
+                    var toast = Toast.Make("Image could not be deleted", ToastDuration.Short, 14);
+                    await toast.Show();
+                }                
             }
         });
     }

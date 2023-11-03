@@ -1,28 +1,7 @@
-.create-btn {
-    position: fixed;
-    bottom: 9rem;
-    right: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: forestgreen;
-    width: 4rem;
-    height: 4rem;
-    border-radius: 100%;
-    margin-bottom: 1rem;
-}
-
-.create-btn-img {
-    width: 3rem;
-    height: 3rem;
-    margin: 1rem;
-}
-
 .collection-list-container {
     display: flex;
     flex-direction: column;
     width: 100%;
-    min-height: 6rem;
     background-color: #262626;
     padding: 0.5rem;
     margin-bottom: 1rem;
@@ -37,9 +16,9 @@
     width: 100%;
     height: 4rem;
     background-color: darkgoldenrod;
-    margin-bottom: 1rem;
     border-radius: 10px;
     color: black;
+    margin-bottom: 0.5rem;
 }
 
 .collection-list-title-text {
@@ -128,7 +107,8 @@
 
 .apod-image {
     width: 100%;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 10px;
 }
 
 .image-container {
@@ -142,6 +122,26 @@
     align-items: center;
     width: 100%;
     height: 8vh;
+}
+
+.create-btn {
+    position: fixed;
+    bottom: 9rem;
+    right: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: forestgreen;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 100%;
+    margin-bottom: 1rem;
+}
+
+.create-btn-img {
+    width: 3rem;
+    height: 3rem;
+    margin: 1rem;
 }
 
 .loading {

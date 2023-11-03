@@ -122,9 +122,6 @@
       <Content Update="wwwroot\Images\actions.svg">
         <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>
-      <Content Update="wwwroot\Images\edit.svg">
-        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      </Content>
       <Content Update="wwwroot\Images\next.svg">
         <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       </Content>

@@ -6,17 +6,13 @@
 @using CommunityToolkit.Maui.Core;
 
 @inject ApiService RandomImages
-@inject AstronomyDb db
+@inject DbService db
 
 <div>
     <div>
-        @if (randomImages != null)
+        @if (_randomImages != null)
         {
-            <div class="refresh-bar" @onclick="RefreshGallery()">
-                <img class="refresh-img" src="Images/refresh.svg" alt="Icon" />
-                <div class="refresh-text">Refresh</div>
-            </div>
-            @foreach(var image in randomImages)
+            @foreach(var image in _randomImages)
             {
                 <a href="gallery/@image.Id">
                     <div class="image-container">
@@ -24,6 +20,9 @@
                     </div>
                 </a>
             }
+            <div class="refresh-btn" @onclick="RefreshGallery()">
+                <img class="refresh-btn-img" src="Images/refresh.svg" alt="Icon" />
+            </div>
         }
         else
         {
@@ -36,18 +35,18 @@
 </div>
 
 @code {
-    private List<ApodImage> randomImages;
+    private List<ApodImage> _randomImages;
 
     protected override async Task OnInitializedAsync()
     {
-        randomImages = await RandomImages.GetGalleryApod();
+        _randomImages = await RandomImages.GetGalleryApod();
     }
 
     private EventCallback RefreshGallery()
     {
         return EventCallback.Factory.Create(this, async () =>
         {
-            randomImages = await RandomImages.ForceGalleryRefresh();
+            _randomImages = await RandomImages.ForceGalleryRefresh();
         });
     }
 }
