@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using Microsoft.JSInterop;
-using sum200_project_stargazer.Model;
+using Hv.Sum200.Stargazer.Model;
 
-namespace sum200_project_stargazer.Data
+namespace Hv.Sum200.Stargazer.Data
 {
     internal class ApiService
     {

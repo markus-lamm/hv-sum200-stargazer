@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace sum200_project_stargazer.Model
+namespace Hv.Sum200.Stargazer.Model
 {
     public class CollectionList
     {

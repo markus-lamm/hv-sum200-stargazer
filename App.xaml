@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:sum200_project_stargazer"
-             x:Class="sum200_project_stargazer.App">
+             xmlns:local="clr-namespace:Hv.Sum200.Stargazer"
+             x:Class="Hv.Sum200.Stargazer.App">
     <Application.Resources>
         <ResourceDictionary>
 

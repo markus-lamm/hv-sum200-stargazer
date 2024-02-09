@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace sum200_project_stargazer
+namespace Hv.Sum200.Stargazer
 {
     public class Program
     {

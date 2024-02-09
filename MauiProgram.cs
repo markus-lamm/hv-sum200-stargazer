@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
-using sum200_project_stargazer.Data;
+using Hv.Sum200.Stargazer.Data;
 using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Behaviors;
 using CommunityToolkit.Maui.Core;
 
-namespace sum200_project_stargazer
+namespace Hv.Sum200.Stargazer
 {
     public static class MauiProgram
     {

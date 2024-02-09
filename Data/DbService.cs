@@ -1,13 +1,13 @@
 ﻿using Microsoft.JSInterop;
 using SQLite;
-using sum200_project_stargazer.Model;
+using Hv.Sum200.Stargazer.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace sum200_project_stargazer.Data
+namespace Hv.Sum200.Stargazer.Data
 {
     public class DbService
     {

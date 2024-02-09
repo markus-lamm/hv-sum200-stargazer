@@ -2,7 +2,7 @@ using Microsoft.Maui;
 using Microsoft.Maui.Hosting;
 using System;
 
-namespace sum200_project_stargazer
+namespace Hv.Sum200.Stargazer
 {
     internal class Program : MauiApplication
     {

@@ -1,8 +1,8 @@
 ﻿<maui:MauiWinUIApplication
-    x:Class="sum200_project_stargazer.WinUI.App"
+    x:Class="Hv.Sum200.Stargazer.WinUI.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:maui="using:Microsoft.Maui"
-    xmlns:local="using:sum200_project_stargazer.WinUI">
+    xmlns:local="using:Hv.Sum200.Stargazer.WinUI">
 
 </maui:MauiWinUIApplication>

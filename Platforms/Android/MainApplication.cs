@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace sum200_project_stargazer
+namespace Hv.Sum200.Stargazer
 {
     [Application]
     public class MainApplication : MauiApplication

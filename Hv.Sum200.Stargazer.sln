@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "sum200-project-stargazer", "sum200-project-stargazer.csproj", "{B18AE14D-246D-4494-A24A-9ABE9AD5886B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hv.Sum200.Stargazer", "Hv.Sum200.Stargazer.csproj", "{B18AE14D-246D-4494-A24A-9ABE9AD5886B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

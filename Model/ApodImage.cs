@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace sum200_project_stargazer.Model
+namespace Hv.Sum200.Stargazer.Model
 {
     public class ApodImage
     {
